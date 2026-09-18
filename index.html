@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>功能頁樣式資料庫</title>
+<link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+<header class="site-header">
+  <div class="container header-row">
+    <a href="index.html" class="logo">功能頁樣式資料庫</a>
+    <nav class="main-nav" id="mainNav">
+      <a href="common.html" data-nav="common">共用</a>
+      <a href="gallery.html" data-nav="gallery">相簿</a>
+      <a href="video.html" data-nav="video">影片</a>
+      <a href="article.html" data-nav="article">文章</a>
+      <a href="faq.html" data-nav="faq">FAQ</a>
+    </nav>
+    <div class="header-search">
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="7"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+      <input id="headerSearchInput" type="text" placeholder="搜尋全部案例…">
+    </div>
+  </div>
+</header>
+
+<main class="container page-main">
+
+  <div class="hero">
+    <h1>功能頁樣式資料庫</h1>
+    <p>收藏不同案件用過的功能頁 HTML／CSS／JS，依分類查找、看真實效果、直接複製程式碼套進新案件。</p>
+    <div class="hero-search">
+      <div class="hero-search-box">
+        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="7"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+        <input id="heroSearchInput" type="text" placeholder="輸入關鍵字，例如 gallery、hover、768…">
+      </div>
+      <div class="hero-results" id="heroResults"></div>
+    </div>
+  </div>
+
+  <div class="section-label">最近新增</div>
+  <div class="recent-row" id="recentRow"></div>
+
+  <div class="section-label">分類</div>
+  <div class="cat-grid" id="catGrid"></div>
+
+</main>
+
+<script src="js/cases.js"></script>
+<script src="js/app.js"></script>
+<script>
+  wireHeader('home');
+  renderHomePage();
+</script>
+</body>
+</html>
