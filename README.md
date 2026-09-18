@@ -13,12 +13,25 @@
 ├─ article.html      文章分類頁
 ├─ faq.html          FAQ 分類頁
 ├─ css/
-│  └─ style.css      資料庫介面的 CSS（跟案例原始碼完全分開）
+│  ├─ style.css        資料庫介面的 CSS（跟案例原始碼完全分開）
+│  └─ template-base.css  套版基礎樣式：normalize.css + menu.css 逐字全文，
+│                         Preview iframe 一律先載入這份，重現正式網站真正的 cascade
 ├─ js/
 │  ├─ cases.js        案例資料，唯一資料來源
 │  └─ app.js          渲染邏輯（首頁／分類頁／Preview／搜尋／篩選／複製都從這裡產生）
 └─ README.md
 ```
+
+## Preview 的 Cascade 順序
+
+`buildPreviewDoc()`（`js/app.js`）組出來的 iframe，CSS 載入順序刻意對齊正式網站：
+
+1. **`css/template-base.css`**（外部 `<link>` 載入）——套版基礎樣式，逐字收錄 `normalize.css` + `menu.css`，不摘錄、不挑選。這裡放的是 `box-sizing`、reset、`.main_part`／`.show_content`／`.blog_box`／`.accordion`／圖片比例這類「案例的 custom CSS 沒寫，但正式網站其實靠套版撐著」的東西。
+2. **`dependencies.css`**（案例宣告的額外套件，例如 Swiper）
+3. **案例的 `css`**（原始 custom CSS，逐字，不動）
+4. **`previewExtraCss`**（只允許放「正式網站真的沒有、但 Preview 展示必要」的東西，例如背景紙紋理找不到來源時的替代色；**不可以拿套版樣式塞進這裡**——那些要收進 `template-base.css`）
+
+如果之後案例用到 header 導覽列（`menu_v4_designdada.css`）或 `animate__` 動畫 class（`animate.css`），這兩份目前沒有收錄進 `template-base.css`，需要另外評估要不要加。
 
 所有路徑都是相對路徑，不管這個 repo 部署在 GitHub Pages 的根目錄還是子路徑（`https://username.github.io/repo-name/`）都能正常運作，重新整理任何一頁也不會 404。
 

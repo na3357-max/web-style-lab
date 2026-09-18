@@ -29,7 +29,16 @@ function countByCat(catId) {
   return CASES.filter(function (c) { return c.category === catId; }).length;
 }
 
-/* ---------- 組裝 Preview 用的完整 HTML（不經過任何 HTML 屬性字串轉義，直接組字串再指派給 iframe.srcdoc） ---------- */
+/* ---------- 組裝 Preview 用的完整 HTML ----------
+   Cascade 順序刻意對齊正式網站：
+   1. template-base.css（真實套版基礎樣式：normalize.css + menu.css，外部 <link> 載入，
+      跟正式網站一樣是「先載入套版、custom.css 疊在最上面」）
+   2. dependencies.css（案例自己宣告的額外套件，例如 Swiper／Fancybox）
+   3. case.css（案例的原始 custom.css，逐字，不動）
+   4. previewExtraCss（只允許放「正式網站真的沒有、但 Preview 展示必要」的東西，
+      例如缺圖時的替代色塊；不可以拿來補套版樣式——那些應該進 template-base.css）
+   不經過任何 HTML 屬性字串轉義，直接組字串再指派給 iframe.srcdoc。
+------------------------------------------------------------------ */
 function buildPreviewDoc(kase) {
   const depCss = (kase.dependencies && kase.dependencies.css || [])
     .map(function (u) { return '<link rel="stylesheet" href="' + u + '">'; })
@@ -42,9 +51,10 @@ function buildPreviewDoc(kase) {
   const bodyJs = kase.js || '';
 
   return '<!DOCTYPE html><html><head><meta charset="utf-8">\n' +
+    '<link rel="stylesheet" href="css/template-base.css">\n' +
     depCss + '\n' +
-    '<style>\n' + (kase.previewExtraCss || '') + '\n</style>\n' +
     '<style>\n' + (kase.css || '') + '\n</style>\n' +
+    (kase.previewExtraCss ? '<style>\n' + kase.previewExtraCss + '\n</style>\n' : '') +
     '</head><body>\n' +
     bodyHtml + '\n' +
     depJs + '\n' +
